@@ -8,5 +8,5 @@ data class UserResponse(
     val blocked: Boolean,
     val emailVerified: Boolean,
     val createdAt: String,
-    val updatedAt: String
+    val updatedAt: String,
 )

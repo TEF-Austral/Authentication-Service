@@ -1,17 +1,15 @@
 FROM gradle:8.5.0-jdk21-alpine AS build
 COPY . /home/gradle/src
 WORKDIR /home/gradle/src
-RUN gradle :api:bootJar --no-daemon
+RUN gradle :auth:bootJar --no-daemon
 
 FROM eclipse-temurin:21-jre-alpine
 EXPOSE 8080 5005
 
-# Variables de entorno con defaults
 ENV SPRING_PROFILES_ACTIVE=production
 ENV JAVA_OPTS=""
 
 RUN mkdir /app
-COPY --from=build /home/gradle/src/api/build/libs/*.jar /app/spring-boot-application.jar
+COPY --from=build /home/gradle/src/auth/build/libs/*.jar /app/spring-boot-application.jar
 
-# ENTRYPOINT flexible que usa las variables de entorno
 ENTRYPOINT sh -c "java ${JAVA_OPTS} -jar -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE} /app/spring-boot-application.jar"

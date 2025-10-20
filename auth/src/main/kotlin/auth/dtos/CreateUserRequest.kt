@@ -5,5 +5,5 @@ data class CreateUserRequest(
     val password: String,
     val name: String,
     val nickname: String? = null,
-    val blocked: Boolean = false
+    val blocked: Boolean = false,
 )
