@@ -3,10 +3,6 @@ package auth.security
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod.GET
-import org.springframework.http.HttpMethod.POST
-import org.springframework.http.HttpMethod.PATCH
-import org.springframework.http.HttpMethod.DELETE
 import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -31,28 +27,20 @@ class OAuth2ResourceServerSecurityConfiguration(
         http
             .authorizeHttpRequests {
                 it
+                    // 1. Rutas públicas
                     .requestMatchers("/")
                     .permitAll()
-                    .requestMatchers(GET, "/snippets", "/snippets/*")
-                    .hasAnyAuthority("SCOPE_read:snippets", "SCOPE_admin")
-                    .requestMatchers(POST, "/snippets")
-                    .hasAnyAuthority("SCOPE_write:snippets", "SCOPE_admin")
-                    .requestMatchers(GET, "/users", "/users/*")
-                    .hasAnyAuthority("SCOPE_read:users", "SCOPE_admin")
-                    .requestMatchers(POST, "/users")
-                    .hasAnyAuthority("SCOPE_write:users", "SCOPE_admin")
-                    .requestMatchers(PATCH, "/users/*")
-                    .hasAnyAuthority("SCOPE_write:users", "SCOPE_admin")
-                    .requestMatchers(DELETE, "/users/*")
-                    .hasAnyAuthority("SCOPE_delete:users", "SCOPE_admin")
-                    .anyRequest()
-                    .authenticated()
-            }.oauth2ResourceServer { it.jwt(withDefaults()) }
-            .cors {
-                it.disable()
-            }.csrf {
-                it.disable()
+
+                    // 2. Para TODAS las demás rutas (solo /users en este servicio)
+                    //    solo exigimos que el usuario esté AUTENTICADO.
+                    //    La lógica ABAC irá en el UserController.
+                    .requestMatchers("/users/**").authenticated()
+                    .anyRequest().authenticated()
             }
+            .oauth2ResourceServer { it.jwt(withDefaults()) } // Valida el token
+            .cors { it.disable() }
+            .csrf { it.disable() }
+
         return http.build()
     }
 
