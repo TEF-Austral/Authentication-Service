@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    image: ghcr.io/tef-austral/authentication-api:latest
+    image: ghcr.io/tef-austral/authentication-api:dev
     ports:
       - 8006:8080
     env_file:

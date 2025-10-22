@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@SpringBootApplication(scanBasePackages = ["auth"])
+@SpringBootApplication
 class AuthenticationServiceApplication {
 
     @GetMapping("/")
@@ -18,9 +18,6 @@ class AuthenticationServiceApplication {
     fun jwt(
         @AuthenticationPrincipal jwt: Jwt,
     ): String = jwt.tokenValue
-
-    // LOS ENDPOINTS de /snippets (GET, POST) FUERON REMOVIDOS
-    // Ahora vivirán en 'authorization-service'
 }
 
 fun main(args: Array<String>) {

@@ -27,17 +27,11 @@ class OAuth2ResourceServerSecurityConfiguration(
         http
             .authorizeHttpRequests {
                 it
-                    // 1. Rutas públicas
-                    .requestMatchers("/")
+                    .requestMatchers("/", "/actuator/health")
                     .permitAll()
-
-                    // 2. Para TODAS las demás rutas (solo /users en este servicio)
-                    //    solo exigimos que el usuario esté AUTENTICADO.
-                    //    La lógica ABAC irá en el UserController.
-                    .requestMatchers("/users/**").authenticated()
                     .anyRequest().authenticated()
             }
-            .oauth2ResourceServer { it.jwt(withDefaults()) } // Valida el token
+            .oauth2ResourceServer { it.jwt(withDefaults()) }
             .cors { it.disable() }
             .csrf { it.disable() }
 

@@ -6,11 +6,11 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${AUTH0_ISSUER_URI:https://tef-austral.us.auth0.com/}
+          issuer-uri: ${AUTH0_ISSUER_URI}
 
 auth0:
-  audience: ${AUTH0_AUDIENCE:https://tef-austral.com/api}
-  domain: ${AUTH0_DOMAIN:tef-austral.us.auth0.com}
+  audience: ${AUTH0_AUDIENCE}
+  domain: ${AUTH0_DOMAIN}
   management:
     client-id: ${AUTH0_MGMT_CLIENT_ID}
     client-secret: ${AUTH0_MGMT_CLIENT_SECRET}
